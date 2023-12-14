@@ -1319,9 +1319,31 @@ $(function() {
         reader.readAsText(file);
     }
 
+    function fetchDataFromUrl(url) {
+        fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(text => {
+            $('#enterURL').hide();
+            parse(text);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+
     function startProcessGraph() {
+
+        // Get the current URL of the webpage
+        const currentUrl = window.location.href;
+
         // Parse the URL and its parameters
-        const urlObj = new URL(url);
+        const urlObj = new URL(currentUrl);
         const params = new URLSearchParams(urlObj.search);
 
         // Get values of 'id' and 'v' parameters
@@ -1329,6 +1351,8 @@ $(function() {
         const vValue = params.get('v');
 
         const url = `https://cudigitalresource.s3.ap-southeast-1.amazonaws.com/buildings/${idValue}/v${vValue}/${idValue}.ttl`;
+
+        // console.log(url)
         fetchDataFromUrl(url);
     }
 
