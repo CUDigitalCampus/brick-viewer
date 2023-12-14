@@ -1319,5 +1319,20 @@ $(function() {
         reader.readAsText(file);
     }
 
+    function startProcessGraph() {
+        // Parse the URL and its parameters
+        const urlObj = new URL(url);
+        const params = new URLSearchParams(urlObj.search);
+
+        // Get values of 'id' and 'v' parameters
+        const idValue = params.get('id');
+        const vValue = params.get('v');
+
+        const url = `https://cudigitalresource.s3.ap-southeast-1.amazonaws.com/buildings/${idValue}/v${vValue}/${idValue}.ttl`;
+        fetchDataFromUrl(url);
+    }
+
+    startProcessGraph();
+
     document.getElementById('file-input').addEventListener('change', readSingleFile, false);
 });
